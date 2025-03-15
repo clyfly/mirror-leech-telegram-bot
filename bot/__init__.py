@@ -3,6 +3,7 @@ from uvloop import install
 install()
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from asyncio import Lock, new_event_loop, set_event_loop
+from pyrogram import utils
 from logging import (
     getLogger,
     FileHandler,
@@ -24,6 +25,9 @@ getLogger("pymongo").setLevel(WARNING)
 getLogger("aiohttp").setLevel(WARNING)
 
 bot_start_time = time()
+
+utils.MIN_CHAT_ID = -999999999999
+utils.MIN_CHANNEL_ID = -100999999999999
 
 bot_loop = new_event_loop()
 set_event_loop(bot_loop)
