@@ -16,7 +16,7 @@ class BotCommands:
     CloneCommand = f"clone{Config.CMD_SUFFIX}"
     CountCommand = f"count{Config.CMD_SUFFIX}"
     DeleteCommand = f"del{Config.CMD_SUFFIX}"
-    CancelTaskCommand = [f"cancel{Config.CMD_SUFFIX}", f"c{Config.CMD_SUFFIX}"]
+    CancelTaskCommand = [f"cancel{Config.CMD_SUFFIX}", f"x{Config.CMD_SUFFIX}"]
     CancelAllCommand = f"cancelall{Config.CMD_SUFFIX}"
     ForceStartCommand = [f"forcestart{Config.CMD_SUFFIX}", f"fs{Config.CMD_SUFFIX}"]
     ListCommand = f"list{Config.CMD_SUFFIX}"
