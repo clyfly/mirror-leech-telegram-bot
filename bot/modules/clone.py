@@ -28,9 +28,9 @@ from ..helper.mirror_leech_utils.rclone_utils.transfer import RcloneTransferHelp
 from ..helper.mirror_leech_utils.status_utils.gdrive_status import GoogleDriveStatus
 from ..helper.mirror_leech_utils.status_utils.rclone_status import RcloneStatus
 from ..helper.telegram_helper.message_utils import (
-    check_botpm,
     send_message,
     delete_message,
+    delete_links,
     send_status_message,
 )
 
@@ -61,9 +61,9 @@ class Clone(TaskListener):
         self.is_clone = True
 
     async def new_event(self):
-        await check_botpm(message, button)
         text = self.message.text.split("\n")
         input_list = text[0].split(" ")
+        await delete_links(self.message)
 
         args = {
             "link": "",

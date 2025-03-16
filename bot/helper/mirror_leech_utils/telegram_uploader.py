@@ -46,6 +46,7 @@ class TelegramUploader:
         self._last_uploaded = 0
         self._processed_bytes = 0
         self._listener = listener
+        self._user_id = listener.user_id
         self._path = path
         self._start_time = time()
         self._total_files = 0
@@ -62,7 +63,6 @@ class TelegramUploader:
         self._sent_msg = None
         self._user_session = self._listener.user_transmission
         self._error = ""
-        self._user_id = listener.user_id
 
     async def _upload_progress(self, current, _):
         if self._listener.is_cancelled:
@@ -312,7 +312,7 @@ class TelegramUploader:
             return
         if self._total_files <= self._corrupted:
             await self._listener.on_upload_error(
-                f"Files Corrupted or unable to upload. {self._error or 'Check logs!'}"
+                f"Files Corrupted or unable to upload. {self._error or 'Check logs!'}\n<b>Maybe you forgot to chat me in PM</b>"
             )
             return
         LOGGER.info(f"Leech Completed: {self._listener.name}")
@@ -484,6 +484,9 @@ class TelegramUploader:
                 LOGGER.error(f"Retrying As Document. Path: {self._up_path}")
                 return await self._upload_file(cap_mono, file, o_path, True)
             raise err
+
+    async def _copy_message(self):
+        await sleep(1)
 
         async def _copy(target, retries=3):
             for attempt in range(retries):

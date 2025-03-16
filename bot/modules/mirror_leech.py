@@ -38,7 +38,7 @@ from ..helper.mirror_leech_utils.download_utils.rclone_download import (
 from ..helper.mirror_leech_utils.download_utils.telegram_download import (
     TelegramDownloadHelper,
 )
-from ..helper.telegram_helper.message_utils import send_message, get_tg_link_message, check_botpm
+from ..helper.telegram_helper.message_utils import send_message, get_tg_link_message, delete_links
 
 
 class Mirror(TaskListener):
@@ -72,9 +72,9 @@ class Mirror(TaskListener):
         self.is_nzb = is_nzb
 
     async def new_event(self):
-        await check_botpm(message, button)
         text = self.message.text.split("\n")
         input_list = text[0].split(" ")
+        await delete_links(self.message)
 
         args = {
             "-doc": False,

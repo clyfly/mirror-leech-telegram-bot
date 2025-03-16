@@ -20,9 +20,9 @@ from ..helper.listeners.task_listener import TaskListener
 from ..helper.mirror_leech_utils.download_utils.yt_dlp_download import YoutubeDLHelper
 from ..helper.telegram_helper.button_build import ButtonMaker
 from ..helper.telegram_helper.message_utils import (
-    check_botpm,
     send_message,
     edit_message,
+    delete_links,
     delete_message,
 )
 
@@ -282,9 +282,9 @@ class YtDlp(TaskListener):
         self.is_leech = is_leech
 
     async def new_event(self):
-        await check_botpm(message, button)
         text = self.message.text.split("\n")
         input_list = text[0].split(" ")
+        await delete_links(self.message)
         qual = ""
 
         args = {

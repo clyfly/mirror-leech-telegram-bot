@@ -280,15 +280,13 @@ async def send_status_message(msg, user_id=0):
                 Config.STATUS_UPDATE_INTERVAL, update_status_message, sid
             )
 
-async def check_botpm(message, button=None):
-    try:
-        await TgClient.bot.send_chat_action(message.from_user.id, ChatAction.TYPING)
-        return None, button
-    except Exception:
-        if button is None:
-            button = ButtonMaker()
-        _msg = "<b>Bot isn't Started in PM or Inbox (Private)</b>"
-        button.url_button(
-            "Start Bot Now", f"https://t.me/{TgClient.BNAME}?start=start", "header"
-        )
-        return _msg, button
+async def delete_links(message):
+    if Config.DELETE_LINKS:
+        try:
+            if reply_to := message.reply_to_message:
+                await reply_to.delete()
+                await message.delete()
+            else:
+                await message.delete()
+        except Exception as e:
+            LOGGER.error(str(e))

@@ -316,6 +316,7 @@ class TaskListener(TaskConfig):
         ):
             await database.rm_complete_task(self.message.link)
         msg = f"<b>Name: </b><code>{escape(self.name)}</code>\n\n<b>Size: </b>{get_readable_file_size(self.size)}"
+        _msg = f"<b>Job Done For {self.tag}\nSize {get_readable_file_size(self.size)}\nPlease check your PM!</b>"
         LOGGER.info(f"Task Done: {self.name}")
         if self.is_leech:
             msg += f"\n<b>Total Files: </b>{folders}"
@@ -323,19 +324,25 @@ class TaskListener(TaskConfig):
                 msg += f"\n<b>Corrupted Files: </b>{mime_type}"
             msg += f"\n<b>cc: </b>{self.tag}\n\n"
             if not files:
-                await send_message(self.message, msg)
+                await send_message(self.message, _msg)
+                if Config.LOG_CHAT_ID:
+                     await send_message(int(Config.LOG_CHAT_ID), msg)
             else:
                 fmsg = ""
                 for index, (link, name) in enumerate(files.items(), start=1):
                     fmsg += f"{index}. <a href='{link}'>{name}</a>\n"
                     if len(fmsg.encode() + msg.encode()) > 4000:
-                        await send_message(self.message, msg)
-                        await send_message(self.user_id, msg + fmsg)
+                        await send_message(self.message, _msg)
+                        await send_message(self.user_id, msg)
+                        if Config.LOG_CHAT_ID:
+                            await send_message(int(Config.LOG_CHAT_ID), msg + fmsg)
                         await sleep(1)
                         fmsg = ""
                 if fmsg != "":
-                    await send_message(self.message, msg)
-                    await send_message(self.user_id, msg + fmsg)
+                    await send_message(self.message, _msg)
+                    await send_message(self.user_id, msg)
+                    if Config.LOG_CHAT_ID:
+                        await send_message(int(Config.LOG_CHAT_ID), msg + fmsg)
         else:
             msg += f"\n\n<b>Type: </b>{mime_type}"
             if mime_type == "Folder":
@@ -376,8 +383,10 @@ class TaskListener(TaskConfig):
                 msg += f"\n\nPath: <code>{rclone_path}</code>"
                 button = None
             msg += f"\n\n<b>cc: </b>{self.tag}"
-            await send_message(self.message, msg)
+            await send_message(self.message, _msg)
             await send_message(self.user_id, msg, button)
+            if Config.LOG_CHAT_ID:
+                await send_message(int(Config.LOG_CHAT_ID), msg, button)
         if self.seed:
             await clean_target(self.up_dir)
             async with queue_dict_lock:
