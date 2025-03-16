@@ -13,6 +13,14 @@ from ..ext_utils.status_utils import get_readable_message
 
 async def send_message(message, text, buttons=None, block=True):
     try:
+        if isinstance(message, int):
+            return await TgClient.bot.send_message(
+                chat_id=message,
+                text=text,
+                disable_web_page_preview=True,
+                disable_notification=True,
+                reply_markup=buttons,
+            )
         return await message.reply(
             text=text,
             quote=True,
@@ -271,3 +279,16 @@ async def send_status_message(msg, user_id=0):
             intervals["status"][sid] = SetInterval(
                 Config.STATUS_UPDATE_INTERVAL, update_status_message, sid
             )
+
+async def check_botpm(message, button=None):
+    try:
+        await TgClient.bot.send_chat_action(message.from_user.id, ChatAction.TYPING)
+        return None, button
+    except Exception:
+        if button is None:
+            button = ButtonMaker()
+        _msg = "<b>Bot isn't Started in PM or Inbox (Private)</b>"
+        button.url_button(
+            "Start Bot Now", f"https://t.me/{TgClient.BNAME}?start=start", "header"
+        )
+        return _msg, button

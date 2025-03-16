@@ -62,6 +62,7 @@ class TelegramUploader:
         self._sent_msg = None
         self._user_session = self._listener.user_transmission
         self._error = ""
+        self._user_id = listener.user_id
 
     async def _upload_progress(self, current, _):
         if self._listener.is_cancelled:
@@ -429,6 +430,8 @@ class TelegramUploader:
                     disable_notification=True,
                     progress=self._upload_progress,
                 )
+            
+            await self._copy_message()
 
             if (
                 not self._listener.is_cancelled
@@ -481,6 +484,24 @@ class TelegramUploader:
                 LOGGER.error(f"Retrying As Document. Path: {self._up_path}")
                 return await self._upload_file(cap_mono, file, o_path, True)
             raise err
+
+        async def _copy(target, retries=3):
+            for attempt in range(retries):
+                try:
+                    msg = await TgClient.bot.get_messages(
+                        self._sent_msg.chat.id,
+                        self._sent_msg.id,
+                    )
+                    await msg.copy(target)
+                    return
+                except Exception as e:
+                    LOGGER.error(f"Attempt {attempt + 1} failed: {e} {msg.id}")
+                    if attempt < retries - 1:
+                        await sleep(0.5)
+            LOGGER.error(f"Failed to copy message after {retries} attempts")
+
+        if self._sent_msg.chat.id != self._user_id:
+            await _copy(self._user_id)
 
     @property
     def speed(self):
