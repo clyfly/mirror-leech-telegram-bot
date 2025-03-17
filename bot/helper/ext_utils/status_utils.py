@@ -6,6 +6,7 @@ from asyncio import iscoroutinefunction, gather
 from ... import task_dict, task_dict_lock, bot_start_time, status_dict, DOWNLOAD_DIR
 from ...core.config_manager import Config
 from ..telegram_helper.button_build import ButtonMaker
+from ..telegram_helper.bot_commands import BotCommands
 
 SIZE_UNITS = ["B", "KB", "MB", "GB", "TB", "PB"]
 
@@ -47,6 +48,7 @@ STATUSES = {
 
 
 async def get_task_by_gid(gid: str):
+    gid = gid[:8]
     async with task_dict_lock:
         for tk in task_dict.values():
             if hasattr(tk, "seeding"):
@@ -225,7 +227,7 @@ async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=
             msg += f" | <b>Time: </b>{task.seeding_time()}"
         else:
             msg += f"\n<b>Size: </b>{task.size()}"
-        msg += f"\n<b>Stop: </b><code>/x {task.gid()}</code>\n\n"
+        msg += f"\n<b>Stop: </b><i>/{BotCommands.CancelTaskCommand[1]}_{task.gid()[:8]}</i>\n\n"
 
     if len(msg) == 0:
         if status == "All":
