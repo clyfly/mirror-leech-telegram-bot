@@ -26,7 +26,7 @@ async def cancel(_, message):
     msg = message.text.split("_", maxsplit=1)
     if len(msg) > 1:
         cmd_data = msg[1].split("@", maxsplit=1)
-        if len(cmd_data) > 1 and cmd_data[1].strip() != TgClient.BNAME:
+        if len(cmd_data) > 1 and cmd_data[1].strip() != TgClient.NAME:
             return
         gid = cmd_data[0]
         if len(gid) == 6:
