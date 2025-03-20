@@ -185,7 +185,7 @@ class Clone(TaskListener):
             else:
                 src_path = self.link
                 cmd = [
-                    "burung".
+                    "burung",
                     "lsjson",
                     "--fast-list",
                     "--stat",
@@ -240,7 +240,7 @@ class Clone(TaskListener):
                 return
             LOGGER.info(f"Cloning Done: {self.name}")
             cmd1 = [
-                "burung".
+                "burung",
                 "lsf",
                 "--fast-list",
                 "-R",
@@ -252,7 +252,7 @@ class Clone(TaskListener):
                 "--log-systemd",
             ]
             cmd2 = [
-                "burung".
+                "burung",
                 "lsf",
                 "--fast-list",
                 "-R",
@@ -264,7 +264,7 @@ class Clone(TaskListener):
                 "--log-systemd",
             ]
             cmd3 = [
-                "burung".
+                "burung",
                 "size",
                 "--fast-list",
                 "--json",
