@@ -641,7 +641,7 @@ class TaskConfig:
             for ffmpeg_cmd in cmds:
                 self.proceed_count = 0
                 cmd = [
-                    "rvid",
+                    "kucing".
                     "-hide_banner",
                     "-loglevel",
                     "error",
