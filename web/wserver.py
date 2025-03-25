@@ -242,11 +242,96 @@ async def set_aria2(gid, selected_files):
 
 @app.get("/", response_class=HTMLResponse)
 async def homepage():
-    return (
-        "<h1>See mirror-leech-telegram-bot "
-        "<a href='https://www.github.com/anasty17/mirror-leech-telegram-bot'>@GitHub</a> "
-        "By <a href='https://github.com/anasty17'>Anas</a></h1>"
-    )
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mirror Leech Telegram Bot</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background: linear-gradient(to right, #6a0572, #1b1b2f);
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                color: white;
+            }
+            .container {
+                text-align: center;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+                max-width: 600px;
+                width: 100%;
+            }
+            .title {
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+            }
+            .subtitle {
+                font-size: 18px;
+                color: #FFD700;
+                margin-bottom: 20px;
+            }
+            a {
+                color: #FFD700;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            .image-box {
+                margin: 20px 0;
+                padding: 10px;
+                background-color: rgba(255, 255, 255, 0.2);
+                max-width: 200px;
+                width: 100%;
+                display: inline-block;
+            }
+            .image-box img.main-image {
+                width: 100%;
+                height: auto;
+            }
+            .telegram-logo {
+                width: 60px;
+                height: 60px;
+                margin-top: 30px;
+                border-radius: 50%;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                cursor: pointer;
+            }
+            .telegram-logo:hover {
+                transform: scale(1.1) rotate(15deg);
+                box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">Bring to world by Zyradaex Leech</div>
+            <div class="image-box">
+                <img class="main-image" src="https://i.pinimg.com/736x/dc/63/a1/dc63a14cf24c3ba44faadc5ecb5515e7.jpg" alt="Image Placeholder">
+            </div>
+            <div class="subtitle">
+                See mirror-leech-telegram-bot <a href="https://www.github.com/anasty17/mirror-leech-telegram-bot">GitHub</a> By <a href="https://github.com/anasty17">Anas</a>
+            </div>
+            <a href="https://t.me/zyradaexleech" target="_blank">
+                <img class="telegram-logo" src="https://i.pinimg.com/474x/02/89/2f/02892f890e3c8c0405ea8be2bbc01cdb.jpg" alt="Telegram Logo">
+            </a>
+        </div>
+    </body>
+    </html>
+    """
 
 
 @app.exception_handler(Exception)
